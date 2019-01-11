@@ -58,6 +58,24 @@ def crash():
     message_display('You crashed')
 
 
+def game_intro():
+    intro = True
+
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        gameDisplay.fill(black)
+        largeText = pygame.font.Font('freesansbold.ttf', 70)
+        TextSurf, TextRect = text_objects("F1 Race Game. Enjoy!", largeText)
+        TextRect.center = ((display_width / 2), (display_height / 2))
+        gameDisplay.blit(TextSurf, TextRect)
+        pygame.display.update()
+        clock.tick(15)
+
+
 def game_loop():
     x = (display_width * 0.45)
     y = (display_height * 0.75)
@@ -118,6 +136,7 @@ def game_loop():
         clock.tick(60)
 
 
+game_intro()
 game_loop()
 pygame.quit()
 quit()
