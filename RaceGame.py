@@ -6,11 +6,14 @@ pygame.init()
 
 black = (0, 0, 0)
 white = (255, 255, 255)
-red = (255, 0, 0)
+bright_red = (255, 0, 0)
+red = (200, 0, 0)
+bright_green = (0, 255, 0)
+green = (0, 200, 0)
 obstacle_color = (11, 22, 33)
 
-display_width = 800
-display_height = 600
+display_width = 1000
+display_height = 700
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption("F1 Race Game")
@@ -30,8 +33,8 @@ def car(x, y):
     gameDisplay.blit(carImg, (x, y))
 
 
-def text_objects(text, font):
-    textSurface = font.render(text, True, red)
+def text_objects(text, font, color):
+    textSurface = font.render(text, True, color)
     return textSurface, textSurface.get_rect()
 
 
@@ -43,7 +46,7 @@ def obstacles_dodged(count):
 
 def message_display(text):
     largeText = pygame.font.Font('freesansbold.ttf', 100)
-    TextSurf, TextRect = text_objects(text, largeText)
+    TextSurf, TextRect = text_objects(text, largeText, red)
     TextRect.center = ((display_width / 2), (display_height / 2))
     gameDisplay.blit(TextSurf, TextRect)
 
@@ -58,6 +61,23 @@ def crash():
     message_display('You crashed')
 
 
+def button(description, start_x, start_y, width, height, color, action_color, action=None):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+
+    button = pygame.draw.rect(gameDisplay, color, (start_x, start_y, width, height))
+
+    if button.collidepoint(mouse[0], mouse[1]):
+        pygame.draw.rect(gameDisplay, action_color, (start_x, start_y, width, height))
+        if click[0] == 1:
+            action()
+
+    smallText = pygame.font.Font("freesansbold.ttf", 20)
+    textSurf, textRect = text_objects(description, smallText, white)
+    textRect.center = button.center
+    gameDisplay.blit(textSurf, textRect)
+
+
 def game_intro():
     intro = True
 
@@ -69,9 +89,13 @@ def game_intro():
 
         gameDisplay.fill(black)
         largeText = pygame.font.Font('freesansbold.ttf', 70)
-        TextSurf, TextRect = text_objects("F1 Race Game. Enjoy!", largeText)
+        TextSurf, TextRect = text_objects("F1 Race Game. Enjoy!", largeText, red)
         TextRect.center = ((display_width / 2), (display_height / 2))
         gameDisplay.blit(TextSurf, TextRect)
+
+        start_button = button('GO!', 100, display_height * 0.7, 150, 60, green, bright_green, game_loop)
+        exit_button = button('QUIT', display_width - 250, display_height * 0.7, 150, 60, red, bright_red, quit)
+
         pygame.display.update()
         clock.tick(15)
 
