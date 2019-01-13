@@ -5,6 +5,7 @@ import random
 pygame.init()
 
 black = (0, 0, 0)
+gray = (119, 119, 119)
 white = (255, 255, 255)
 bright_red = (255, 0, 0)
 red = (200, 0, 0)
@@ -132,7 +133,7 @@ def game_loop():
 
         x += x_change
 
-        gameDisplay.fill(white)
+        gameDisplay.fill(gray)
 
         obstacles(obstacle_startx, obstacle_starty, obstacle_width, obstacle_heigth, obstacle_color)
         obstacle_starty += obstacle_speed
